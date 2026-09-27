@@ -353,15 +353,6 @@ cbuf3_get_tail (
     out_ptr->offset = cbuf3->chunk_size;
 }
 
-void
-cbuf3_pointer_copy (
-    struct cbuf3_pointer *out_ptr, 
-    struct cbuf3_pointer *in_ptr)
-{
-    out_ptr->node = in_ptr->node;
-    out_ptr->offset = out_ptr->offset;
-}
-
 error_code
 cbuf3_pointer_add (struct cbuf3 *cbuf3, 
 		   struct cbuf3_pointer *out_ptr, 
@@ -420,9 +411,7 @@ cbuf3_pointer_subtract (
     struct cbuf3_pointer *ptr2    /* Input */
 )
 {
-    struct cbuf3_pointer p;
-
-    cbuf3_pointer_copy (&p, ptr1);
+    struct cbuf3_pointer p = *ptr1;
     *diff = 0;
     
     do {
