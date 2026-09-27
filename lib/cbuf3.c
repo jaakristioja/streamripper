@@ -676,7 +676,6 @@ cbuf3_peek (Cbuf3 *cbuf3,
     cur.node = ptr->node;
     cur.offset = ptr->offset;
     while (len > 0) {
-	u_long this_len;
 	char *chunk = (char*) cur.node->data;
 
 	/* Check for overflow */
@@ -685,11 +684,8 @@ cbuf3_peek (Cbuf3 *cbuf3,
 	}
 
 	/* Compute length to peek from this chunk */
-	if (cur.offset + len > cbuf3->chunk_size) {
-	    this_len = cbuf3->chunk_size - cur.offset;
-	} else {
-	    this_len = len;
-	}
+	u_long const available = cbuf3->chunk_size - cur.offset;
+	u_long const this_len = len < available ? len : available;
 
 	debug_printf ("Copying %d bytes (%d).\n", this_len, len);
 
